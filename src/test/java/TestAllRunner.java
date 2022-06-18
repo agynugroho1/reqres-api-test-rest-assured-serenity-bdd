@@ -1,11 +1,11 @@
-import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
+import net.serenitybdd.cucumber.CucumberWithSerenity;
 import org.junit.runner.RunWith;
 
-@RunWith(Cucumber.class)
+@RunWith(CucumberWithSerenity.class)
 @CucumberOptions(
-        features = {"classpath:features"},
-        plugin = {"pretty", "html:report-cucumber.html", "json:cucumber-json.json"}
+        features = {"src/test/resources/features/api"},
+        plugin = {"pretty"}
 )
 public class TestAllRunner {
 }
