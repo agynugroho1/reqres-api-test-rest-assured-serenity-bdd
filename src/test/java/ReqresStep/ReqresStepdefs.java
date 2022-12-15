@@ -15,10 +15,10 @@ import java.io.File;
 public class ReqresStepdefs {
 
     Reqres reqres = new Reqres();
-    @When("I send GET Single User with id {int}")
-    public void iSendGETSingleUserWithId(int id) {
-        Reqres.userID = id;
-        reqres.getSingleUser();
+    @When("I send GET List User with page {int}")
+    public void iSendGETListUserWithPage(int page) {
+        Reqres.pageNumber = page;
+        reqres.getListUser();
     }
 
     @Then("The response status code is {int}")
@@ -27,8 +27,8 @@ public class ReqresStepdefs {
     }
 
     @And("response body with jsonPath {string} should be equal {int}")
-    public void responseBodyWithJsonPathShouldBeEqual(String dataID, int expectedID) {
-        restAssuredThat(validatableResponse -> validatableResponse.body(dataID, equalTo(expectedID)));
+    public void responseBodyWithJsonPathShouldBeEqual(String data, int expected) {
+        restAssuredThat(validatableResponse -> validatableResponse.body(data, equalTo(expected)));
     }
 
     @And("response body with jsonPath {string} should be equal {string}")
@@ -42,39 +42,15 @@ public class ReqresStepdefs {
         restAssuredThat(validatableResponse -> validatableResponse.assertThat().body(matchesJsonSchemaInClasspath(path)));
     }
 
-    @When("I send DELETE by selecting id {int}")
-    public void iSendDELETEBySelectingId(int id) {
-        Reqres.userID = id;
-        reqres.deleteSingleUser();
-    }
-
-    @When("I send PUT Request with body {string}")
-    public void iSendPUTRequestWithBody(String fileObj) {
-        String path = "src/test/resources/payload/"+fileObj;
-        File file = new File(String.format(path));
-        reqres.putUpdateUser(file);
-    }
-
-    @Given("Set user id is {int}")
-    public void setUserIdIs(int id) {
-        Reqres.userID = id;
-    }
-
     @When("I send POST Request for {string} with body {string}")
     public void iSendPOSTRequestForWithBody(String action, String fileObj) {
         String path = "src/test/resources/payload/"+fileObj;
         File file = new File(String.format(path));
         switch (action){
-            case "Register" :
-                reqres.postRegister(file);
-                break;
             case "Create" :
                 reqres.postCreateUser(file);
                 break;
-            case "Login" :
-                reqres.postLogin(file);
-                break;
-            default: throw new RuntimeException();
+            default:
         }
     }
 }
